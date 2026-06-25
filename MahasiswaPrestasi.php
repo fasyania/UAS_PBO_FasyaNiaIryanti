@@ -2,29 +2,25 @@
 require_once 'Mahasiswa.php';
 
 class MahasiswaPrestasi extends Mahasiswa {
-    // Properti tambahan spesifik terenkapsulasi
     private $namaInstansiBeasiswa;
     private $minimalIpkSyarat;
 
-    // Constructor MahasiswaPrestasi
     public function __construct($id_mahasiswa, $nama_mahasiswa, $nim, $semester, $tarifUktNominal, $jenis_pembayaran, $namaInstansiBeasiswa, $minimalIpkSyarat) {
         parent::__construct($id_mahasiswa, $nama_mahasiswa, $nim, $semester, $tarifUktNominal, $jenis_pembayaran);
         $this->namaInstansiBeasiswa = $namaInstansiBeasiswa;
         $this->minimalIpkSyarat = $minimalIpkSyarat;
     }
 
-    // Implementasi abstract method 1: Hitung Tagihan
+    // ==================== METHOD OVERRIDING (TAHAP 5) ====================
     public function hitungTagihanSemester() {
-        // Mahasiswa Prestasi membayar UKT sesuai nominal yang tercatat (setelah potongan beasiswa)
-        return $this->tarifUktNominal;
+        // Mendapat potongan 75%, hanya membayar 25% dari tarif asli
+        return $this->tarifUktNominal * 0.25;
     }
 
-    // Implementasi abstract method 2: Tampilkan Spesifikasi
     public function tampilkanSpesifikasiAkademik() {
         return "Instansi Beasiswa: " . $this->namaInstansiBeasiswa . " | Syarat Minimal IPK: " . $this->minimalIpkSyarat;
     }
 
-    // Method berisi Query SELECT - WHERE untuk kategori Prestasi
     public function getQuerySelect($dbConnection) {
         $query = "SELECT id_mahasiswa, nama_mahasiswa, nim, semester, tarif_ukt_nominal, nama_instansi_beasiswa, minimal_ipk_syarat 
                   FROM tabel_mahasiswa 
